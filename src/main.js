@@ -15,9 +15,30 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
     //mainWindow.webContents.openDevTools();
 
+
     //listen for interaction with window header
     ipcMain.on('close-window', () => {
-        mainWindow.close()
+        mainWindow.close();
+    });
+    ipcMain.on('min-window', () => {
+        mainWindow.minimize();
+    });
+    ipcMain.on('max-window', () => {
+        if (mainWindow.isMaximized()) {
+            mainWindow.unmaximize();
+        } else {
+            mainWindow.maximize();
+        }
+    });
+    ipcMain.on('pin-window', () => {
+        if (mainWindow.isAlwaysOnTop()== false) {
+            mainWindow.setAlwaysOnTop(true, 'screen')
+        } else {
+            mainWindow.setAlwaysOnTop(false, 'screen')
+        }
+    });
+    ipcMain.on('dev-clicked', () => {
+        mainWindow.webContents.toggleDevTools();
     });
 };
 
